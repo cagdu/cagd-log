@@ -1,0 +1,14 @@
+{
+    "name": "cagd-log",
+    "version": "0.0.1",
+    "main": "index.js",
+    "typings": "index.d.ts",
+    "keywords": ["log", "logger"],
+    "author": {
+        "email": "me@cagatayd.com",
+        "name": "CagatayD",
+        "url": "https://github.com/cagdu"
+    },
+    "license": "MIT",
+    "description": "A simple and flexible logging utility for Node.js applications."
+}
