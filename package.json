@@ -1,6 +1,6 @@
 {
     "name": "cagd-log",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "main": "index.js",
     "typings": "index.d.ts",
     "keywords": ["log", "logger"],
@@ -9,6 +9,7 @@
         "name": "CagatayD",
         "url": "https://github.com/cagdu"
     },
+    "repository": "cagdu/cagd-log",
     "license": "MIT",
     "description": "A simple and flexible logging utility for Node.js applications."
 }
