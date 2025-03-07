@@ -1,5 +1,5 @@
 declare class Log {
-    log(level: "info" | "warn" | "error" | "debug", message: string): void;
+    log(level: "info" | "warn" | "error" | "debug" | "log", message: string): void;
     info(message: string): void;
     warn(message: string): void;
     error(message: string): void;

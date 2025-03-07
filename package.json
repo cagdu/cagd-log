@@ -1,15 +1,27 @@
 {
-    "name": "cagd-log",
-    "version": "0.0.3",
-    "main": "index.js",
-    "typings": "index.d.ts",
-    "keywords": ["log", "logger"],
     "author": {
         "email": "me@cagatayd.com",
         "name": "CagatayD",
         "url": "https://github.com/cagdu"
     },
-    "repository": "cagdu/cagd-log",
+    "description": "A simple and flexible logging utility for Node.js applications.",
+    "engines": {
+        "node": ">=5"
+    },
+    "files": [
+        "index.d.ts",
+        "index.js",
+        "LICENSE",
+        "README.md"
+    ],
+    "keywords": [
+        "log",
+        "logger"
+    ],
     "license": "MIT",
-    "description": "A simple and flexible logging utility for Node.js applications."
+    "main": "index.js",
+    "name": "cagd-log",
+    "repository": "cagdu/cagd-log",
+    "typings": "index.d.ts",
+    "version": "0.0.4"
 }
