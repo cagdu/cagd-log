@@ -12,61 +12,35 @@ A simple and flexible logging utility for Node.js applications. This project pro
 
 ## Installation
 
-1. Clone the repository or install via npm (if available).
-
 ```bash
 npm install cagd-log
 ```
 
-2. Import and initialize the logger in your project:
+## Example
 
 ```javascript
 const log = require("cagd-log");
+
+log.debug({ user: "AG", action: "Blocked." });
 ```
 
 ## Usage
 
-You can use the logger in your Node.js application by calling one of the following methods:
-
 ### `.info(message: string)`
 
-Logs an informational message.
-
-```javascript
-log.info("This is an info message");
-```
+If "dev_mode" is set to "false", the logs will not be visible in the console.
 
 ### `warn(message: string)`
 
-Logs a warning message.
-
-```javascript
-log.warn("This is a warning message");
-```
-
 ### `error(message: string)`
-
-Logs an error message.
-
-```javascript
-log.error("This is an error message");
-```
 
 ### `debug(message: object | string)`
 
 Logs a debug message. This method also inspects objects and logs them as strings.
 
-```javascript
-log.debug({ userId: 123, action: "login" });
-```
-
 ### `log(level: "info" | "warn" | "error" | "debug", message: string)`
 
 Logs a message with a specified log level.
-
-```javascript
-log.log("info", "This is a custom log level message");
-```
 
 ## Configuration
 
@@ -74,21 +48,36 @@ The logger configuration is defined in the `log_config.js` file, which is genera
 
 ### Options
 
-- **`dev_mode`**: Set to `true` to display logs in the console during development.
+- **`dev_mode`**: Set to `true` to display logs in the console during development. This option only hide info logs on the console.
 - **`log.path`**: Define the path where log files will be stored. Default is `/log/`.
-- **`log.type`**: Define the log format. Available options: `json` or `txt`.
+- **`log.type`**: Define the log format. Available options: `json` or `log`.
+- **`log.arg_splitter`**: If you using `log` type, this option is split when multiple args used in function. Default is `|` (e.g., `.warn("HIGH", "LOW"); // 00/00/00, 00:00:00 [WARN]:  HIGH | LOW`)
 - **`log.merge`**: Set to `true` to merge all logs into a single file.
-- **`time.locales`**: Locale for formatting timestamps (e.g., `en-US`).
-- **`time.zone`**: Time zone for timestamps (e.g., `UTC`).
-- **`types`**: Customize log level labels (e.g., `info`, `warn`, `error`, `debug`).
+- **`time.locales`**: Locale for formatting timestamps (e.g., `tr-TR`).
+- **`time.zone`**: Time zone for timestamps (e.g., `Europe/Istanbul`).
+- **`types`**: Customize log level labels and colors.
 
-## Example
+
+### Default Options 
 
 ```javascript
-const log = require("cagd-log");
-
-log.info("This is an informational log.");
-log.warn("This is a warning.");
-log.error("An error occurred.");
-log.debug({ user: "AG", action: "Blocked." });
+module.exports = {
+    dev_mode: false,
+    log: {
+        "arg_splitter": "|",
+        "path": "/log/",
+        "type": "json",
+        "merge": false
+    },
+    time: {
+        "locales": "en-US",
+        "zone": "UTC"
+    },
+    types: {
+        info: (a = "\x1b[32m INFO \x1b[0m") => `${a}`,
+        warn: (a = "\x1b[33m WARN  \x1b[0m") => `${a}`,
+        error: (a = "\x1b[31m ERROR \x1b[0m") => `${a}`,
+        debug: (a = "\x1b[34m DEBUG \x1b[0m") => `${a}`
+    }
+};
 ```

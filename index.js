@@ -34,7 +34,7 @@ class Log {
     }
 
     _saveIt(level, ...args) {
-        let dir = path.join(__dirname, this.options.log.path);
+        let dir = path.join(process.cwd(), this.options.log.path);
         this._checkFolderOrFile(dir);
 
         let file = path.join(dir, `${this.options.log.merge ? "all" : level}.${this.options.log.type}`), value = this._readIt(file);
