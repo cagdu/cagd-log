@@ -1,6 +1,9 @@
 # 🗃️ CagD-Log
 
-📝 **cagd-log** is a flexible and easy-to-use logging library for Node.js applications. It supports multiple log levels and can store logs in JSON or plain text format.  
+📝 **cagd-log** is a flexible and easy-to-use logging library for Node.js applications. It supports multiple log levels and can store logs in JSON or plain text format.
+
+## Changelog  
+For the latest changes, follow the updates on [GitHub](https://github.com/cagdu/cagd-log/commits/main/).
 
 ## 🚀 Installation  
 
@@ -26,7 +29,7 @@ By default, `cagd-log` creates a `log_config.js` file in the project root. You c
 
 | Option             | Type       | Default Value | Description                                                                                 |
 |--------------------|------------|---------------|---------------------------------------------------------------------------------------------|
-| `dev_mode`         | `boolean`  | `false`       | If `true`, logs will always be displayed in the console, even for `info` level.             |
+| `dev_mode`         | `boolean`  | `false`       | If `true`, logs will always be displayed in the console, even for `info` and `debug` level. |
 | `log.arg_splitter` | `string`   | `\|`          | Character used to separate arguments in logs.                                               |
 | `log.path`         | `string`   | `/log/`       | Directory where logs are stored.                                                            |
 | `log.type`         | `string`   | `json`        | Log file format (`json` or `log`).                                                          |

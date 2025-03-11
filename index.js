@@ -47,7 +47,7 @@ class Log {
         if (this.options.log.type === "json") {
             value.push({ timestamp: this.timestamp(), filename, message: args.reduce((a, b, c) => { a[c] = b; return a; }, {}), ...(this.options.log.merge ? { type: level } : {}) }); value = JSON.stringify(value, null, 4);
         }
-        else value = `${value}${this.time()} file:${filename} [${String(level).toUpperCase()}]: ${String(args.join(" | "))}\n`;
+        else value = `${value}${this.time()} file:${filename} [${String(level).toUpperCase()}]: ${String(args.join(` ${this.options.log.arg_splitter} `))}\n`;
 
         return fs.writeFileSync(file, value, { encoding: "utf8" });
     }
@@ -55,9 +55,9 @@ class Log {
     _LogIt(level, ...args) {
         let paths = [path.resolve(module.parent?.filename), path.resolve(process.cwd() + "\\")], filename = paths[0].startsWith(paths[1]) ? paths[0].replace(paths[1], "") : paths[0];
 
-        this._saveIt(level, filename, ...args);
+        if (!["info"].find(_ => _ === String(level).toLowerCase())) this._saveIt(level, filename, ...args);
 
-        if (!this.options.dev_mode && String(level).toLowerCase() === "info") return;
+        if (!this.options.dev_mode && ["info", "debug"].find(_ => _ === String(level).toLowerCase())) return;
 
         return console[level](`[\x1b[35m${this.time()}\x1b[0m] • [\x1b[36m${filename}\x1b[0m] • [${(this.options.types[level])()}] •>`, ...args);
     }
