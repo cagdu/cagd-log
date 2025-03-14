@@ -4,23 +4,24 @@ class Log {
     static instance;
 
     options = {}
-    default_options = { dev_mode: false, log: { arg_splitter: "|", path: "/log/", type: "json", merge: false }, time: { locales: "en-US", zone: "UTC" }, types: { info: (a = "\x1b[32m INFO \x1b[0m") => `${a}`, warn: (a = "\x1b[33m WARN  \x1b[0m") => `${a}`, error: (a = "\x1b[31m ERROR \x1b[0m") => `${a}`, debug: (a = "\x1b[34m DEBUG \x1b[0m") => `${a}`, log: (a = "\x1b[38m LOG   \x1b[0m") => `${a}` } }
+    default_options = require("./default_config");
     config_name = "log_config.js"
 
     constructor() {
         if (!Log.instance) {
-            this._checkFolderOrFile(process.cwd(), path.join(process.cwd(), this.config_name), "module.exports = {};");
-            this.options = this._checkTheConfig(require(path.join(process.cwd(), this.config_name)), this.default_options, true);
+            this.options = this._checkTheConfig(path.join(process.cwd(), this.config_name));
             Log.instance = this;
         }
         return Log.instance;
     }
 
-    // This one is ChatGPT code. i don't write every sentence. I just minified and little changes. :)
-    _checkTheConfig = (n, o, t = !1) => { for (const t in o) "object" != typeof o[t] || null === o[t] || Array.isArray(o[t]) ? t in n || (n[t] = o[t]) : (n[t] && "object" == typeof n[t] || (n[t] = {}), this._checkTheConfig(n[t], o[t])); if (t) { var i = "module.exports = {\n", e = n => i = `${i}${n}\n`; for (const o in n) if ("object" == typeof n[o] && null !== n[o]) if ("types" === o) { e(`    ${o}: {`); for (const t in n[o]) "function" == typeof n[o][t] ? e(`        ${t}: ${n[o][t].toString()},`) : e(`        ${t}: ${JSON.stringify(n[o][t])},`); e("    },") } else e(`    ${o}: ${JSON.stringify(n[o], null, 8)},`); else "function" == typeof n[o] ? e(`    ${o}: ${n[o].toString()},`) : e(`    ${o}: ${JSON.stringify(n[o])},`); e("};"), fs.writeFileSync(path.join(process.cwd(), this.config_name), i, { encoding: "utf8" }) } return n };
-
     timestamp = () => new Date().getTime();
     time = () => new Date().toLocaleString(this.options.time.locales, { timeZone: this.options.time.zone, day: "2-digit", hour: "2-digit", hourCycle: "h24", minute: "2-digit", month: "2-digit", second: "2-digit", year: "2-digit" });
+
+    _checkTheConfig(a) {
+        if (fs.existsSync(a)) return require(a); else fs.copyFileSync(path.join(__dirname, "/default_config.js"), a);
+        return this.default_options;
+    }
 
     _checkFolderOrFile(folder, file, filevalue) {
         if (folder) { if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true }) }
@@ -33,7 +34,12 @@ class Log {
         this._checkFolderOrFile(null, file, value);
         value = fs.readFileSync(file, { encoding: "utf8" });
 
-        return (type === "json" ? JSON.parse(value) : value);
+        if (type === "json") {
+            if (!value.startsWith("[") && !value.endsWith("]")) value = "[]";
+            value = JSON.parse(value);
+        }
+
+        return value;
     }
 
     _saveIt(level, filename, ...args) {
@@ -45,7 +51,7 @@ class Log {
         args.map((val, i) => { switch (typeof val) { case "function": args[i] = util.inspect(val); break; case "object": args[i] = JSON.stringify(val, null, 0); break; }; return args[i] })
 
         if (this.options.log.type === "json") {
-            value.push({ timestamp: this.timestamp(), filename, message: args.reduce((a, b, c) => { a[c] = b; return a; }, {}), ...(this.options.log.merge ? { type: level } : {}) }); value = JSON.stringify(value, null, 4);
+            value.push({ timestamp: this.timestamp(), filename, message: args.reduce((a, b, c) => { a[c] = b; return a; }, {}), ...(this.options.log.merge ? { type: level } : {}) }); value = JSON.stringify(value, null, 0);
         }
         else value = `${value}${this.time()} file:${filename} [${String(level).toUpperCase()}]: ${String(args.join(` ${this.options.log.arg_splitter} `))}\n`;
 
@@ -54,8 +60,7 @@ class Log {
 
     _LogIt(level, ...args) {
         let paths = [path.resolve(module.parent?.filename), path.resolve(process.cwd() + "\\")], filename = paths[0].startsWith(paths[1]) ? paths[0].replace(paths[1], "") : paths[0];
-
-        if (!["info"].find(_ => _ === String(level).toLowerCase())) this._saveIt(level, filename, ...args);
+        this._saveIt(level, filename, ...args);
 
         if (!this.options.dev_mode && ["info", "debug"].find(_ => _ === String(level).toLowerCase())) return;
 
