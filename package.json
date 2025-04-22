@@ -9,6 +9,7 @@
         "node": ">=5"
     },
     "files": [
+        "config.json",
         "default_config.js",
         "index.d.ts",
         "index.js",
@@ -24,5 +25,5 @@
     "name": "cagd-log",
     "repository": "cagdu/cagd-log",
     "typings": "index.d.ts",
-    "version": "0.0.7"
+    "version": "0.0.8"
 }

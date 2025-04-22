@@ -2,25 +2,18 @@ const fs = require("node:fs"), path = require("node:path"), util = require("node
 
 class Log {
     static instance;
+    options = {};
+    config = require("./config.json");
 
-    options = {}
-    default_options = require("./default_config");
-    config_name = "log_config.js"
-
-    constructor() {
-        if (!Log.instance) {
-            this.options = this._checkTheConfig(path.join(process.cwd(), this.config_name));
-            Log.instance = this;
-        }
-        return Log.instance;
-    }
+    constructor() { if (!Log.instance) { this.options = this._checkTheConfig(); Log.instance = this; }; return Log.instance; }
 
     timestamp = () => new Date().getTime();
     time = () => new Date().toLocaleString(this.options.time.locales, { timeZone: this.options.time.zone, day: "2-digit", hour: "2-digit", hourCycle: "h24", minute: "2-digit", month: "2-digit", second: "2-digit", year: "2-digit" });
 
-    _checkTheConfig(a) {
-        if (fs.existsSync(a)) return require(a); else fs.copyFileSync(path.join(__dirname, "/default_config.js"), a);
-        return this.default_options;
+    _checkTheConfig() {
+        if (!fs.existsSync(path.join(process.cwd(), this.config.location))) fs.mkdirSync(path.join(process.cwd(), this.config.location));
+        if (!fs.existsSync(path.join(process.cwd(), this.config.location, this.config.filename + ".js"))) fs.copyFileSync(path.join(__dirname, "default_config.js"), path.join(process.cwd(), this.config.location, this.config.filename + ".js"));
+        return require(path.join(process.cwd(), this.config.location, this.config.filename + ".js"));
     }
 
     _checkFolderOrFile(folder, file, filevalue) {
@@ -65,6 +58,14 @@ class Log {
         if (!this.options.dev_mode && ["info", "debug"].find(_ => _ === String(level).toLowerCase())) return;
 
         return console[level](`[\x1b[35m${this.time()}\x1b[0m] • [\x1b[36m${filename}\x1b[0m] • [${(this.options.types[level])()}] •>`, ...args);
+    }
+
+    setConfig(cfg = {}) {
+        if (!cfg.location || !cfg.filename) return void console.warn(`\x1b[41mWARNING:\x1b[43m"location" and "filename" are required.\x1b[0m`);
+        if (JSON.stringify(cfg, null, 0) === JSON.stringify(this.config, null, 0)) return;
+        fs.writeFileSync(path.join(__dirname, "config.json"), JSON.stringify(cfg, null, 0), { encoding: "utf8" });
+        void console.warn(`\x1b[41mWARNING:\x1b[43m Restart the project for the applying.\x1b[0m`);
+        this.config = cfg;
     }
 
     debug = (...a) => this._LogIt("debug", ...a);

@@ -21,6 +21,15 @@ const log = require("cagd-log");
 log.debug({ user: "AG", action: "Blocked." });
 ```  
 
+## ⚠️ Config file location and name
+You can now change the config file location and name.
+
+```javascript
+const log = require("cagd-log");
+
+log.setConfig({ location: "log", filename: "cagd-log.config" }); // This settings is default. 
+```
+
 ## 🔧 Configuration  
 
 By default, `cagd-log` creates a `log_config.js` file in the project root. You can modify it to customize the logging behavior.  
