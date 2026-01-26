@@ -5,6 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-01-26
+
+### ✨ NEW FEATURES
+
+- **Scoped/Namespaced Logging** - Major new feature!
+  - Call `log.log("category")` with single argument to create a scoped logger
+  - Use standard methods within scope: `log.log("payment").error("Failed")`
+  - Files named as `{category}-{level}.json` (e.g., `payment-error.json`)
+  - JSON logs include `"category"` field for easy filtering
+  - Console output shows both category and level: `[PAYMENT] [ERROR]`
+  - Perfect for organizing logs by module/feature
+
+### 🎯 USAGE EXAMPLES
+
+```javascript
+// Create scoped logger
+const paymentLog = log.log("payment");
+paymentLog.warn("High volume");     // payment-warn.json
+paymentLog.error("Failed");         // payment-error.json
+
+// Or chain directly
+log.log("database").info("Connected");  // database-info.json
+```
+
+### 📚 DOCUMENTATION
+
+- Added comprehensive scoped logger examples to README.md
+- Added `example-scoped.js` demonstrating all scoped logger features
+- Updated TypeScript definitions with `ScopedLogger` interface
+- Updated method signatures to reflect dual-mode behavior
+
+## [1.0.1] - 2025-01-26
+
+### 🎨 IMPROVEMENTS
+
+- **Default Config Notification** - Now shows helpful message when using default config (not just when env vars are set)
+- **Custom Level Styling** - Better null-safety check for custom level formatters in `types` config
+- **User Experience** - First-time users get clear guidance on how to configure the logger
+
+### 📚 DOCUMENTATION
+
+- Added comprehensive custom level styling examples to README.md
+- Added ANSI color codes reference for custom formatters
+- Added `example-custom-levels.js` demonstrating all features
+- Updated custom level documentation with styling examples
+
 ## [1.0.0] - 2025-01-26
 
 ### ⚠️ BREAKING CHANGES

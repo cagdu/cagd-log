@@ -100,6 +100,51 @@ declare interface LegacyConfig {
 }
 
 /**
+ * Scoped logger interface - provides standard log methods within a category/namespace.
+ * Created by calling log.log(category) with a single argument.
+ * 
+ * @example
+ * const paymentLog = log.log("payment");
+ * paymentLog.error("Payment failed");  // Creates: payment-error.json
+ */
+declare interface ScopedLogger {
+    /**
+     * Log an info message within this scope
+     * @param args - Values to log
+     */
+    info(...args: any[]): void;
+
+    /**
+     * Log a warning message within this scope
+     * @param args - Values to log
+     */
+    warn(...args: any[]): void;
+
+    /**
+     * Log an error message within this scope
+     * @param args - Values to log
+     */
+    error(...args: any[]): void;
+
+    /**
+     * Log a debug message within this scope
+     * @param args - Values to log
+     */
+    debug(...args: any[]): void;
+
+    /**
+     * Log a message with a custom level within this scope
+     * @param level - Custom log level name
+     * @param args - Values to log
+     * 
+     * @example
+     * const apiLog = log.log("api");
+     * apiLog.log("request", "GET /users");  // Creates: api-request.json
+     */
+    log(level: string, ...args: any[]): void;
+}
+
+/**
  * Main logger class (Singleton pattern).
  * 
  * Configuration Priority:
@@ -156,22 +201,41 @@ declare class Log {
     setConfig(config: LogConfig | LegacyConfig): void;
 
     /**
-     * Log a message with a custom level.
+     * Log a message with a custom level OR create a scoped logger.
      * 
-     * The custom level:
-     * - Creates a separate log file (e.g., security.json, audit.log)
-     * - Displays in console using console.log() (since custom levels don't exist in console API)
-     * - Supports custom formatting via config.types[level]
+     * **Two usage modes:**
      * 
-     * @param level - Log level name (can be any string)
-     * @param args - Values to log (objects, strings, numbers, etc.)
+     * 1. **Custom Level Mode** (2+ arguments):
+     *    Creates a log with a custom level name
+     *    Example: log.log("security", "Failed login")
+     *    Result: security.json file, [SECURITY] label
+     * 
+     * 2. **Scoped Logger Mode** (1 argument):
+     *    Returns a scoped logger object with standard methods
+     *    Example: const dbLog = log.log("database")
+     *    Usage: dbLog.error("Connection failed")
+     *    Result: database-error.json file, [DATABASE] [ERROR] labels
+     * 
+     * @param level - Log level or category name
+     * @param args - Values to log (if 2+ arguments provided)
+     * @returns void if used as custom level, or ScopedLogger if used as category
      * 
      * @example
+     * // Custom level mode
      * log.log("security", "Failed login attempt", { ip: "192.168.1.1" });
-     * log.log("audit", "User deleted", { userId: 123 });
-     * log.log("payment", "Transaction completed", { amount: 99.99 });
+     * 
+     * @example
+     * // Scoped logger mode
+     * const paymentLog = log.log("payment");
+     * paymentLog.warn("High transaction volume");
+     * paymentLog.error("Payment failed", { orderId: 123 });
+     * 
+     * @example
+     * // Chained scoped logger
+     * log.log("database").info("Connected");
+     * log.log("database").error("Connection timeout");
      */
-    log(level: string, ...args: any[]): void;
+    log(level: string, ...args: any[]): void | ScopedLogger;
 
     /**
      * Log an informational message.
