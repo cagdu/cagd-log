@@ -1,23 +1,51 @@
 {
-    "author": { "email": "me@cagatayd.com", "name": "CagatayD", "url": "https://github.com/cagdu" },
-    "bugs": { "url": "https://github.com/cagdu/cagd-log/issues" },
+    "author": {
+        "email": "me@cagatayd.com",
+        "name": "CagatayD",
+        "url": "https://github.com/cagdu"
+    },
+    "bugs": {
+        "url": "https://github.com/cagdu/cagd-log/issues"
+    },
     "description": "A flexible and easy-to-use logging utility for Node.js with support for multiple log levels, custom levels, scoped/namespaced logging, and JSON or text file storage.",
-    "engines": { "node": ">=5" },
+    "engines": {
+        "node": ">=5"
+    },
     "files": [
-        "default_config.js",
-        "index.ts",
+        "dist",
         "LICENSE",
         "README.md"
     ],
     "homepage": "https://github.com/cagdu/cagd-log#readme",
-    "keywords": ["log", "logger", "logging", "scoped-logger", "namespaced-logger", "file-logger", "json-logger", "nodejs-logger", "debug", "console", "monitoring"],
+    "keywords": [
+        "log",
+        "logger",
+        "logging",
+        "scoped-logger",
+        "namespaced-logger",
+        "file-logger",
+        "json-logger",
+        "nodejs-logger",
+        "debug",
+        "console",
+        "monitoring"
+    ],
     "license": "MIT",
-    "main": "index.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "name": "cagd-log",
-    "repository": { "type": "git", "url": "git+https://github.com/cagdu/cagd-log.git" },
-    "version": "1.1.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cagdu/cagd-log.git"
+    },
+    "version": "2.0.0",
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "npm run build",
+        "test": "tsc && cd ./test && clear && node index.js"
+    },
     "devDependencies": {
-        "@types/node": "^25.0.10",
+        "@types/node": "^25.1.0",
         "typescript": "^5.9.3"
     }
 }

@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ES2020",
-		"module": "ESNext",
+		"module": "CommonJS",
 		"lib": ["ES2020"],
 		"moduleResolution": "node",
 		"outDir": "./dist",
@@ -17,6 +17,6 @@
 		"allowSyntheticDefaultImports": true,
 		"types": ["node"]
 	},
-	"include": ["old/index.ts", "src/**/*.ts"],
+	"include": ["index.ts", "src/**/*.ts"],
 	"exclude": ["node_modules", "dist", "**/*.backup"]
 }
