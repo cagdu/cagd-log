@@ -1,4 +1,4 @@
-const fs = require("node:fs"), path = require("node:path"), util = require("node:util");
+const fs = require("fs-extra"), path = require("path"), util = require("util");
 
 class Log {
     static instance;

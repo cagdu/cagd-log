@@ -24,5 +24,10 @@
     "name": "cagd-log",
     "repository": "cagdu/cagd-log",
     "typings": "index.d.ts",
-    "version": "1.0.0"
+    "version": "1.0.1",
+    "dependencies": {
+        "fs-extra": "^11.3.4",
+        "path": "^0.12.7",
+        "util": "^0.12.5"
+    }
 }
