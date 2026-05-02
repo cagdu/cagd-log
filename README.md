@@ -23,7 +23,6 @@ npm install cagd-log
 const log = require("cagd-log");
 
 // Standard log levels
-log.debug({ user: "AG", action: "Blocked." });
 log.info("Server started");
 log.warn("High memory usage");
 log.error("Database connection failed");
