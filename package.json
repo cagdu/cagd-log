@@ -1,33 +1,50 @@
 {
-    "author": {
-        "email": "me@cagatayd.com",
-        "name": "CagatayD",
-        "url": "https://github.com/cagdu"
-    },
-    "description": "A simple and flexible logging utility for Node.js applications.",
-    "engines": {
-        "node": ">=5"
-    },
+    "name": "cagd-log",
+    "version": "1.1.0",
+    "description": "A flexible, zero-dependency logging library for Node.js and Bun.",
+    "type": "commonjs",
+    "main": "index.js",
+    "exports": "./index.js",
+    "typings": "index.d.ts",
     "files": [
+        "CHANGELOG.md",
         "default_config.js",
         "index.d.ts",
         "index.js",
         "LICENSE",
         "README.md"
     ],
+    "scripts": {
+        "test": "node --test"
+    },
     "keywords": [
         "log",
-        "logger"
+        "logger",
+        "logging",
+        "bun",
+        "nodejs",
+        "json-log",
+        "file-logger",
+        "debug",
+        "cagd"
     ],
+    "author": {
+        "email": "me@cagatayd.com",
+        "name": "CagatayD",
+        "url": "https://github.com/cagdu"
+    },
     "license": "MIT",
-    "main": "index.js",
-    "name": "cagd-log",
-    "repository": "cagdu/cagd-log",
-    "typings": "index.d.ts",
-    "version": "1.0.1",
-    "dependencies": {
-        "fs-extra": "^11.3.4",
-        "path": "^0.12.7",
-        "util": "^0.12.5"
-    }
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cagdu/cagd-log.git"
+    },
+    "bugs": {
+        "url": "https://github.com/cagdu/cagd-log/issues"
+    },
+    "homepage": "https://github.com/cagdu/cagd-log#readme",
+    "engines": {
+        "node": ">=16",
+        "bun": ">=1.0"
+    },
+    "dependencies": {}
 }
